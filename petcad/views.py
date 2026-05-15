@@ -2,38 +2,43 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-
 from django.contrib.auth.models import User
+from .models import Person
 
 # Create your views here.
 def index(request):
-    return render(request, 'petcad/index.html')
+    if request.user.is_authenticated:
+        return redirect("dashboard")
 
+    return render(request, "petcad/index.html")
 
 def login_view(request):
     if not request.method == "POST":
-        messages.error(request, "Não foi possível efetuar o login")
         return render(request, 'petcad/index.html')
 
-    email       = request.POST.get("email")
-    password    = request.POST.get("password")
+    email    = request.POST.get("email")
+    password = request.POST.get("password")
 
-    if not email and not password:
+    if not email or not password:
         messages.error(request, "E-mail ou senha inválidos.")
         return render(request, 'petcad/index.html')
     
-    user = authenticate(request, username=email, password=password)
+    try:
+        # Busca a pessoa pelo e-mail no modelo Person
+        person = Person.objects.get(email=email)
+        user = person.user
 
-    if user is not None:
-        login(request, user)
-        return redirect('dashboard') 
-    else:
-        messages.error(request, "E-mail ou senha inválidos.")
+        if user.check_password(password):
+            login(request, user)
+            return redirect('dashboard') 
+        else:
+            messages.error(request, "Senha incorreta.")
+            return render(request, 'petcad/index.html')
+            
+    except Person.DoesNotExist:
+        messages.error(request, "E-mail não cadastrado.")
         return render(request, 'petcad/index.html')
-
-
-from .models import Person # Add this import
-
+ 
 def register_view(request):
     if not request.method == "POST":
         return render(request, 'petcad/index.html')
@@ -71,4 +76,11 @@ def register_view(request):
     messages.success(request, "Sua conta foi criada com sucesso! Agora você pode fazer o login.")
     return redirect('index')
 
-    
+
+def dashboard(request):
+    email = request.user.email
+    person = request.user.person_profile
+    return render(request, "petcad/dashboard.html", {
+        "person": person,
+        "email": email
+    })
