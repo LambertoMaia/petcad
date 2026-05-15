@@ -1,0 +1,127 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PetCad - O sistema definitivo para gestão de pets e tutores. Simples, rápido e eficiente.">
+    <title>PetCad | Gestão Inteligente para o seu Negócio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="{% static 'petcad/css/style.css' %}">
+</head>
+<body>
+    <nav id="navbar">
+        <div class="logo">
+            <i class="ph ph-paw-print"></i>
+            <span>PetCad</span>
+        </div>
+        <div class="nav-links">
+            <a href="#features">Sobre</a>
+        </div>
+    </nav>
+    <main>
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Cuide de quem importa com <br><span>PetCad</span></h1>
+                <p>A plataforma completa para gerenciar pets, tutores e atendimentos em um só lugar. Design intuitivo e ferramentas poderosas.</p>
+                <div class="hero-btns">
+                    <button class="btn-primary" style="width: auto; padding: 1rem 2rem;" onclick="scrollToAuth()">Começar agora</button>
+                </div>
+            </div>
+            <div class="auth-container" id="auth-section">
+                <div class="auth-tabs">
+                    <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Entrar</div>
+                    <div class="auth-tab" id="tab-register" onclick="switchTab('register')">Cadastrar</div>
+                </div>
+
+                {% if messages %}
+                <div class="messages">
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <!-- Login -->
+                <form id="form-login" class="auth-form active" method="POST" action="{% url 'user_login' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <input type="email" name="email" id="login-email" placeholder="seu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">Senha</label>
+                        <input type="password" id="login-password" name="password" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Entrar no Sistema</button>
+                </form>
+
+                <!-- Register -->
+                <form id="form-register" class="auth-form" method="POST" action="{% url 'register_view' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="reg-name">Nome Completo</label>
+                        <input type="text" name="full_name" id="reg-name" placeholder="Como devemos te chamar?" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="reg-cpf">CPF</label>
+                            <input type="text" name="cpf" id="reg-cpf" placeholder="000.000.000-00" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="reg-tel">Telefone</label>
+                            <input type="text" name="telephone" id="reg-tel" placeholder="(00) 00000-0000" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-email">Email</label>
+                        <input type="email" name="email" id="reg-email" placeholder="seu@email.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-address">Endereço</label>
+                        <input type="text" name="address" id="reg-address" placeholder="Rua, Número, Bairro..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="reg-password">Senha</label>
+                        <input type="password" name="password" id="reg-password" placeholder="Mínimo 8 caracteres" required>
+                    </div>
+                    <button type="submit" class="btn-primary">Criar Minha Conta</button>
+                </form>
+            </div>
+        </section>
+
+        <section class="features" id="features">
+            <div class="section-title">
+                <h2>Sobre o PetCad</h2>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph ph-users"></i></div>
+                    <h3>Gestão de Tutores</h3>
+                    <p>Mantenha todos os dados de contato e histórico dos tutores organizados e acessíveis.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph ph-dog"></i></div>
+                    <h3>Prontuário Digital</h3>
+                    <p>Histórico completo de cada pet, incluindo vacinas, consultas e características especiais.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon"><i class="ph ph-chart-line"></i></div>
+                    <h3>Painel de Controle</h3>
+                    <p>Visualize o crescimento do seu negócio com métricas claras e relatórios simplificados.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 PetCad. Todos os direitos reservados. Desenvolvido para a Faculdade.</p>
+    </footer>
+
+    <script src="{% static 'petcad/js/script.js' %}"></script>
+</body>
+</html>

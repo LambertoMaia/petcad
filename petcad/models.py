@@ -1,6 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Person(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='person_profile', null=True, blank=True)
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     cpf = models.CharField(max_length=14) # Standard CPF length
