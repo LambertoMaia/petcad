@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PetCad - Detalhes do Tutor">
+    <title>PetCad | {{ tutor.name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{% static 'petcad/css/dashboard.css' %}" rel="stylesheet" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    {% include 'petcad/NavBarTutores.html' %}
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="{% url 'dashboard' %}">
+                        <div class="emoji"><i class="ph ph-house"></i></div> Dashboard
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="{% url 'tutores' %}">
+                        <div class="emoji"><i class="ph ph-user"></i></div> Tutores
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'todos_pets' %}">
+                        <div class="emoji"><i class="ph-fill ph-paw-print"></i></div> Pets
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <div class="emoji"><i class="ph ph-gear"></i></div> Configurações
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="detail-page-header">
+                <button type="button" class="btn-back" onclick="window.location.href='{% url 'tutores' %}'">
+                    <i class="ph ph-arrow-left"></i>
+                </button>
+                <div>
+                    <h2>Detalhes do tutor</h2>
+                    <p class="subtitle">Informações completas do responsável</p>
+                </div>
+            </div>
+
+            <div class="detail-layout">
+                <div class="profile-card">
+                    <div class="profile-avatar"><i class="ph ph-user"></i></div>
+                    <h3 class="profile-name">{{ tutor.name }}</h3>
+                    <p class="profile-meta">{{ tutor.email }}</p>
+                    <span class="pet-count">{{ tutor.animals.count }} pet{{ tutor.animals.count|pluralize }}</span>
+                    <button type="button" class="btn-profile-edit" onclick="window.location.href='{% url 'editar_tutor' tutor.pk %}'">
+                        <i class="ph-fill ph-pencil-simple"></i> Editar
+                    </button>
+                    <form method="post" action="{% url 'excluir_tutor' tutor.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-profile-delete">
+                            <i class="ph-fill ph-trash"></i> Excluir
+                        </button>
+                    </form>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="info-section-title">INFORMAÇÕES DO TUTOR</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">NOME</span>
+                            <span class="info-value">{{ tutor.name }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">CPF</span>
+                            <span class="info-value">{{ tutor.cpf }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">E-MAIL</span>
+                            <span class="info-value">{{ tutor.email }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">TELEFONE</span>
+                            <span class="info-value">{{ tutor.telephone }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">CEP</span>
+                            <span class="info-value">{{ tutor.cep|default:"—" }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">CIDADE/UF</span>
+                            <span class="info-value">{% if tutor.city %}{{ tutor.city }}/{{ tutor.state }}{% else %}—{% endif %}</span>
+                        </div>
+                    </div>
+                    <div class="info-observations">
+                        <span class="info-label">ENDEREÇO</span>
+                        <span class="info-value">{{ tutor.formatted_address|default:"—" }}</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

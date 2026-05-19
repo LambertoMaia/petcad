@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PetCad - Todos os Pets">
+    <title>PetCad | Todos os Pets</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{% static 'petcad/css/dashboard.css' %}" rel="stylesheet" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    {% include 'petcad/NavBarPets.html' %}
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="{% if not active_species %}active{% endif %}">
+                    <a href="{% url 'todos_pets' %}">
+                        <div class="emoji"><i class="ph-fill ph-paw-print"></i></div> Todos os pets
+                    </a>
+                </li>
+                <li class="{% if active_species == 'cao' %}active{% endif %}">
+                    <a href="{% url 'todos_pets' %}?species=cao">
+                        <div class="emoji">🐶</div> Cães
+                    </a>
+                </li>
+                <li class="{% if active_species == 'gato' %}active{% endif %}">
+                    <a href="{% url 'todos_pets' %}?species=gato">
+                        <div class="emoji">🐱</div> Gatos
+                    </a>
+                </li>
+                <li class="{% if active_species == 'passaro' %}active{% endif %}">
+                    <a href="{% url 'todos_pets' %}?species=passaro">
+                        <div class="emoji">🐦</div> Pássaros
+                    </a>
+                </li>
+                <li class="{% if active_species == 'outro' %}active{% endif %}">
+                    <a href="{% url 'todos_pets' %}?species=outro">
+                        <div class="emoji">🐟</div> Outros
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-header">
+                <div>
+                    <h2>Pets cadastrados</h2>
+                    <p class="subtitle">3 pets encontrados</p>
+                </div>
+                <button type="button" class="btn-novo-pet-content" onclick="window.location.href='{% url 'novo_pet' %}'">+ Novo pet</button>
+            </div>
+
+            <div class="controls-bar">
+                <div class="search-box">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <input type="text" placeholder="Buscar pet por nome...">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="pets-table">
+                    <thead>
+                        <tr>
+                            <th>Pet</th>
+                            <th>Espécie</th>
+                            <th>Raça</th>
+                            <th>Idade</th>
+                            <th>Sexo</th>
+                            <th>Tutor</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="pet-info">
+                                    <div class="pet-avatar">🐶</div>
+                                    <span>Theo</span>
+                                </div>
+                            </td>
+                            <td>Cão</td>
+                            <td>SRD</td>
+                            <td>3 anos</td>
+                            <td><span class="badge badge-macho">Macho</span></td>
+                            <td>May Vitória</td>
+                            <td>
+                                <div class="actions">
+                                    <button type="button" class="btn-action btn-ver" onclick="window.location.href='{% url 'ver_pet' %}'"><i class="ph-fill ph-eye"></i> Ver</button>
+                                    <button type="button" class="btn-action btn-editar" onclick="window.location.href='{% url 'editar_pet' %}'"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
+                                    <button type="button" class="btn-action btn-excluir"><i class="ph-fill ph-trash"></i> Excluir</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="pet-info">
+                                    <div class="pet-avatar">🐱</div>
+                                    <span>Baituxe</span>
+                                </div>
+                            </td>
+                            <td>Gato</td>
+                            <td>SRD</td>
+                            <td>2 anos</td>
+                            <td><span class="badge badge-macho">Macho</span></td>
+                            <td>Selena</td>
+                            <td>
+                                <div class="actions">
+                                    <button type="button" class="btn-action btn-ver"><i class="ph-fill ph-eye"></i> Ver</button>
+                                    <button type="button" class="btn-action btn-editar"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
+                                    <button type="button" class="btn-action btn-excluir"><i class="ph-fill ph-trash"></i> Excluir</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="pet-info">
+                                    <div class="pet-avatar">🐦</div>
+                                    <span>Pipoca</span>
+                                </div>
+                            </td>
+                            <td>Pássaro</td>
+                            <td>Calopsita</td>
+                            <td>1 ano</td>
+                            <td><span class="badge badge-femea">Fêmea</span></td>
+                            <td>Carlos Souza</td>
+                            <td>
+                                <div class="actions">
+                                    <button type="button" class="btn-action btn-ver"><i class="ph-fill ph-eye"></i> Ver</button>
+                                    <button type="button" class="btn-action btn-editar"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
+                                    <button type="button" class="btn-action btn-excluir"><i class="ph-fill ph-trash"></i> Excluir</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

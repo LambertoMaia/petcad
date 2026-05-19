@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PetCad - Tutores">
+    <title>PetCad | Tutores</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{% static 'petcad/css/dashboard.css' %}" rel="stylesheet" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    {% include 'petcad/NavBarTutores.html' %}
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="{% url 'dashboard' %}">
+                        <div class="emoji"><i class="ph ph-house"></i></div> Dashboard
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="{% url 'tutores' %}">
+                        <div class="emoji"><i class="ph ph-user"></i></div> Tutores
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'todos_pets' %}">
+                        <div class="emoji"><i class="ph-fill ph-paw-print"></i></div> Pets
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <div class="emoji"><i class="ph ph-gear"></i></div> Configurações
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="content-header">
+                <div>
+                    <h2>Tutores cadastrados</h2>
+                    <p class="subtitle">3 tutores encontrados</p>
+                </div>
+                <button type="button" class="btn-novo-tutor-content" onclick="window.location.href='{% url 'novo_tutor' %}'">+ Novo tutor</button>
+            </div>
+
+            <div class="controls-bar">
+                <div class="search-box">
+                    <i class="ph ph-magnifying-glass"></i>
+                    <input type="text" placeholder="Buscar tutor por nome...">
+                </div>
+                <button type="button" class="btn-filter">
+                    <i class="ph ph-sliders-horizontal"></i> Filtrar
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table class="pets-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>CPF</th>
+                            <th>Endereço</th>
+                            <th>Telefone</th>
+                            <th>Pets</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>May Vitória</td>
+                            <td>000.000.000-01</td>
+                            <td>Rua SBL, 123 — Olinda/PE</td>
+                            <td>(81) 99999-0001</td>
+                            <td><span class="pet-count">1 pet</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button type="button" class="btn-action btn-ver"><i class="ph-fill ph-eye"></i> Ver</button>
+                                    <button type="button" class="btn-action btn-editar"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
+                                    <button type="button" class="btn-action btn-excluir"><i class="ph-fill ph-trash"></i> Excluir</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Selena</td>
+                            <td>000.000.000-02</td>
+                            <td>Av. Norte, 456 — Recife/PE</td>
+                            <td>(81) 99999-0002</td>
+                            <td><span class="pet-count">2 pets</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button type="button" class="btn-action btn-ver"><i class="ph-fill ph-eye"></i> Ver</button>
+                                    <button type="button" class="btn-action btn-editar"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
+                                    <button type="button" class="btn-action btn-excluir"><i class="ph-fill ph-trash"></i> Excluir</button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Carlos Souza</td>
+                            <td>000.000.000-03</td>
+                            <td>Rua Boa Vista, 789 — Paulista/PE</td>
+                            <td>(81) 99999-0003</td>
+                            <td><span class="pet-count">1 pet</span></td>
+                            <td>
+                                <div class="actions">
+                                    <button type="button" class="btn-action btn-ver"><i class="ph-fill ph-eye"></i> Ver</button>
+                                    <button type="button" class="btn-action btn-editar"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
+                                    <button type="button" class="btn-action btn-excluir"><i class="ph-fill ph-trash"></i> Excluir</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

@@ -151,3 +151,7 @@ cython_debug/
 
 # PyCharm
 .idea/
+
+# Local project documentation (not for version control)
+PROJECT_ANALYSIS.md
+IMPLEMENTATION.md

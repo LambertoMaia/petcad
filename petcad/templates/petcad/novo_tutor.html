@@ -1,0 +1,128 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PetCad - Novo Tutor">
+    <title>PetCad | Novo Tutor</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{% static 'petcad/css/dashboard.css' %}" rel="stylesheet" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    {% include 'petcad/NavBarTutores.html' %}
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="{% url 'dashboard' %}">
+                        <div class="emoji"><i class="ph ph-house"></i></div> Dashboard
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="{% url 'tutores' %}">
+                        <div class="emoji"><i class="ph ph-user"></i></div> Tutores
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'todos_pets' %}">
+                        <div class="emoji"><i class="ph-fill ph-paw-print"></i></div> Pets
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <div class="emoji"><i class="ph ph-gear"></i></div> Configurações
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="detail-page-header">
+                <button type="button" class="btn-back" onclick="window.location.href='{% url 'tutores' %}'">
+                    <i class="ph ph-arrow-left"></i>
+                </button>
+                <div>
+                    <h2>Novo tutor</h2>
+                    <p class="subtitle">Preencha os dados do responsável</p>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <form class="pet-form pet-form-edit tutor-form" id="form-novo-tutor">
+                    <h3 class="form-section-title">DADOS PESSOAIS</h3>
+
+                    <div class="form-group form-group-full">
+                        <label>Nome completo <span class="required">* obrigatório</span></label>
+                        <input type="text" id="tutor-nome" placeholder="Ex: May Vitória" required>
+                    </div>
+
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label>CPF <span class="required">* obrigatório</span></label>
+                            <input type="text" id="tutor-cpf" placeholder="000.000.000-00" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone <span class="required">* obrigatório</span></label>
+                            <input type="text" id="tutor-telefone" placeholder="(00) 00000-0000" required>
+                        </div>
+                        <div class="form-group">
+                            <label>E-mail <span class="required">* obrigatório</span></label>
+                            <input type="email" id="tutor-email" placeholder="exemplo@email.com" required>
+                        </div>
+                    </div>
+
+                    <h3 class="form-section-title">ENDEREÇO</h3>
+
+                    <div class="form-group form-group-cep">
+                        <label>CEP <span class="required">* obrigatório</span></label>
+                        <input type="text" id="tutor-cep" placeholder="00000-000" required>
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label>Logradouro <span class="required">* obrigatório</span></label>
+                        <input type="text" id="tutor-logradouro" placeholder="Rua, Avenida, Travessa..." required>
+                    </div>
+
+                    <div class="form-row-num">
+                        <div class="form-group">
+                            <label>Número <span class="required">* obrigatório</span></label>
+                            <input type="text" id="tutor-numero" placeholder="Ex: 123" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Complemento <span class="optional">(opcional)</span></label>
+                            <input type="text" id="tutor-complemento" placeholder="Apto, Bloco...">
+                        </div>
+                    </div>
+
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label>Bairro <span class="required">* obrigatório</span></label>
+                            <input type="text" id="tutor-bairro" placeholder="Ex: Boa Viagem" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Cidade <span class="required">* obrigatório</span></label>
+                            <input type="text" id="tutor-cidade" placeholder="Ex: Recife" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Estado <span class="required">* obrigatório</span></label>
+                            <input type="text" id="tutor-estado" placeholder="Ex: PE" required maxlength="2">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="window.location.href='{% url 'tutores' %}'">Cancelar</button>
+                        <button type="submit" class="btn-save btn-save-edit">Salvar tutor</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script src="{% static 'petcad/js/novo_tutor.js' %}"></script>
+</body>
+</html>

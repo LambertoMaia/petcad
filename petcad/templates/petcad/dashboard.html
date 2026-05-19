@@ -4,16 +4,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="PetCad - O sistema definitivo para gestão de pets e tutores. Simples, rápido e eficiente.">
-    <title>PetCad | Gestão Inteligente para o seu Negócio</title>
+    <meta name="description" content="PetCad - Dashboard">
+    <title>PetCad | Dashboard</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{% static 'petcad/css/dashboard.css' %}" rel="stylesheet" />
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <link rel="stylesheet" href="{% static 'petcad/css/NavBar.css' %}">
 </head>
 <body>
-{% csrf_token %}
-{% include "petcad/Navbar.html" %}
+    {% include 'petcad/NavBarDashboard.html' %}
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li class="active">
+                    <a href="{% url 'dashboard' %}">
+                        <div class="emoji"><i class="ph ph-house"></i></div> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'tutores' %}">
+                        <div class="emoji"><i class="ph ph-user"></i></div> Tutores
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'todos_pets' %}">
+                        <div class="emoji"><i class="ph-fill ph-paw-print"></i></div> Pets
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <div class="emoji"><i class="ph ph-gear"></i></div> Configurações
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="home-header">
+                <div>
+                    <h2>Bem-vinda, {{ admin_name }} 👋</h2>
+                    <p class="subtitle">Aqui está um resumo do sistema hoje</p>
+                </div>
+                <div class="home-actions">
+                    <button type="button" class="btn-novo-tutor" onclick="window.location.href='{% url 'novo_tutor' %}'">+ Novo tutor</button>
+                    <button type="button" class="btn-novo-pet-home" onclick="window.location.href='{% url 'novo_pet' %}'">+ Novo pet</button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-label">TOTAL DE TUTORES</span>
+                    <span class="stat-value">12</span>
+                    <span class="stat-meta">👤 tutores cadastrados</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">TOTAL DE PETS</span>
+                    <span class="stat-value">28</span>
+                    <span class="stat-meta">🐾 pets cadastrados</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">CÃES</span>
+                    <span class="stat-value">14</span>
+                    <span class="stat-meta">🐶 50% dos pets</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">GATOS</span>
+                    <span class="stat-value">10</span>
+                    <span class="stat-meta">🐱 36% dos pets</span>
+                </div>
+            </div>
+
+            <div class="recent-grid">
+                <div class="recent-card">
+                    <div class="recent-header">
+                        <h3>Tutores recentes</h3>
+                        <a href="{% url 'tutores' %}" class="link-ver-todos">Ver todos →</a>
+                    </div>
+                    <div class="table-container">
+                        <table class="recent-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Telefone</th>
+                                    <th>Pets</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>May Vitória</td>
+                                    <td>(81) 99999-0001</td>
+                                    <td><span class="pet-count">1 pet</span></td>
+                                    <td><button type="button" class="btn-ver-sm">Ver</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Selena</td>
+                                    <td>(81) 99999-0002</td>
+                                    <td><span class="pet-count">2 pets</span></td>
+                                    <td><button type="button" class="btn-ver-sm">Ver</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Carlos Souza</td>
+                                    <td>(81) 99999-0003</td>
+                                    <td><span class="pet-count">1 pet</span></td>
+                                    <td><button type="button" class="btn-ver-sm">Ver</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="recent-card">
+                    <div class="recent-header">
+                        <h3>Pets recentes</h3>
+                        <a href="{% url 'todos_pets' %}" class="link-ver-todos">Ver todos →</a>
+                    </div>
+                    <div class="table-container">
+                        <table class="recent-table">
+                            <thead>
+                                <tr>
+                                    <th>Pet</th>
+                                    <th>Espécie</th>
+                                    <th>Tutor</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="pet-info">
+                                            <div class="pet-avatar">🐶</div>
+                                            <span>Theo</span>
+                                        </div>
+                                    </td>
+                                    <td>Cão</td>
+                                    <td>May Vitória</td>
+                                    <td><button type="button" class="btn-ver-sm" onclick="window.location.href='{% url 'ver_pet' %}'">Ver</button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="pet-info">
+                                            <div class="pet-avatar">🐱</div>
+                                            <span>Baituxe</span>
+                                        </div>
+                                    </td>
+                                    <td>Gato</td>
+                                    <td>Selena</td>
+                                    <td><button type="button" class="btn-ver-sm">Ver</button></td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <div class="pet-info">
+                                            <div class="pet-avatar">🐦</div>
+                                            <span>Pipoca</span>
+                                        </div>
+                                    </td>
+                                    <td>Pássaro</td>
+                                    <td>Carlos Souza</td>
+                                    <td><button type="button" class="btn-ver-sm">Ver</button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 </body>
 </html>

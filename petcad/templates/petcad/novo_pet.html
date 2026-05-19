@@ -1,0 +1,124 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PetCad - Novo Pet">
+    <title>PetCad | Novo Pet</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{% static 'petcad/css/dashboard.css' %}" rel="stylesheet" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    {% include 'petcad/NavBarPets.html' %}
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="{% url 'dashboard' %}">
+                        <div class="emoji"><i class="ph ph-house"></i></div> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'tutores' %}">
+                        <div class="emoji"><i class="ph ph-user"></i></div> Tutores
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="{% url 'todos_pets' %}">
+                        <div class="emoji"><i class="ph-fill ph-paw-print"></i></div> Pets
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <div class="emoji"><i class="ph ph-gear"></i></div> Configurações
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="detail-page-header">
+                <button type="button" class="btn-back" onclick="window.location.href='{% url 'todos_pets' %}'">
+                    <i class="ph ph-arrow-left"></i>
+                </button>
+                <div>
+                    <h2>Novo pet</h2>
+                    <p class="subtitle">Preencha os dados do animal e vincule ao tutor</p>
+                </div>
+            </div>
+
+            <div class="form-card">
+                <form class="pet-form pet-form-edit pet-form-page" id="form-novo-pet">
+                    <h3 class="form-section-title">DADOS DO PET</h3>
+
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label>Nome do pet <span class="required">* obrigatório</span></label>
+                            <input type="text" placeholder="Ex: Theo" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Espécie <span class="required">* obrigatório</span></label>
+                            <input type="text" placeholder="Cão, Gato, Pássaro..." required>
+                        </div>
+                        <div class="form-group">
+                            <label>Raça <span class="optional">(opcional)</span></label>
+                            <input type="text" placeholder="Ex: SRD">
+                        </div>
+                    </div>
+
+                    <div class="form-row-3">
+                        <div class="form-group">
+                            <label>Idade <span class="optional">(opcional)</span></label>
+                            <input type="text" placeholder="Ex: 3 anos">
+                        </div>
+                        <div class="form-group">
+                            <label>Sexo <span class="required">* obrigatório</span></label>
+                            <input type="text" placeholder="Macho / Fêmea" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Observações <span class="optional">(opcional)</span></label>
+                            <textarea rows="3" placeholder="Informações adicionais..."></textarea>
+                        </div>
+                    </div>
+
+                    <h3 class="form-section-title">VÍNCULO COM TUTOR</h3>
+
+                    <div class="form-group form-group-full">
+                        <label>Selecionar tutor <span class="required">* obrigatório</span></label>
+                        <select id="pet-tutor-select" required>
+                            <option value="">Selecione um tutor cadastrado...</option>
+                            <option value="May Vitória">May Vitória</option>
+                            <option value="Selena">Selena</option>
+                            <option value="Carlos Souza">Carlos Souza</option>
+                        </select>
+                        <p class="form-hint">
+                            O tutor precisa estar cadastrado antes.
+                            <a href="{% url 'novo_tutor' %}" class="link-inline">Cadastrar tutor →</a>
+                        </p>
+                    </div>
+
+                    <div class="form-group form-group-full">
+                        <label>Tutor selecionado</label>
+                        <div class="tutor-selected-box" id="tutor-selected-box">
+                            <i class="ph ph-user"></i>
+                            <span id="tutor-selected-name">Nenhum tutor selecionado</span>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="window.location.href='{% url 'todos_pets' %}'">Cancelar</button>
+                        <button type="submit" class="btn-save btn-save-edit">Salvar pet</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script src="{% static 'petcad/js/novo_pet.js' %}"></script>
+</body>
+</html>

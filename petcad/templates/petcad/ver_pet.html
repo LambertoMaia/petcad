@@ -1,0 +1,109 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PetCad - Detalhes do Pet">
+    <title>PetCad | {{ animal.name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{% static 'petcad/css/dashboard.css' %}" rel="stylesheet" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    {% include 'petcad/NavBarPets.html' %}
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="{% url 'dashboard' %}">
+                        <div class="emoji"><i class="ph ph-house"></i></div> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'tutores' %}">
+                        <div class="emoji"><i class="ph ph-user"></i></div> Tutores
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="{% url 'todos_pets' %}">
+                        <div class="emoji"><i class="ph-fill ph-paw-print"></i></div> Pets
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <div class="emoji"><i class="ph ph-gear"></i></div> Configurações
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <div class="detail-page-header">
+                <button type="button" class="btn-back" onclick="window.location.href='{% url 'todos_pets' %}'">
+                    <i class="ph ph-arrow-left"></i>
+                </button>
+                <div>
+                    <h2>Detalhes do pet</h2>
+                    <p class="subtitle">Informações completas do animal</p>
+                </div>
+            </div>
+
+            <div class="detail-layout">
+                <div class="profile-card">
+                    <div class="profile-avatar">🐾</div>
+                    <h3 class="profile-name">{{ animal.name }}</h3>
+                    <p class="profile-meta">{{ animal.species }}{% if animal.race %} · {{ animal.race }}{% endif %}</p>
+                    <span class="badge {% if animal.gender == 0 %}badge-macho{% else %}badge-femea{% endif %}">{{ animal.get_gender_display_label }}</span>
+                    <button type="button" class="btn-profile-edit" onclick="window.location.href='{% url 'editar_pet' animal.pk %}'">
+                        <i class="ph-fill ph-pencil-simple"></i> Editar
+                    </button>
+                    <form method="post" action="{% url 'excluir_pet' animal.pk %}" onsubmit="return confirm('Excluir {{ animal.name }}?');">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-profile-delete">
+                            <i class="ph-fill ph-trash"></i> Excluir
+                        </button>
+                    </form>
+                </div>
+
+                <div class="info-card">
+                    <h3 class="info-section-title">INFORMAÇÕES DO PET</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">NOME</span>
+                            <span class="info-value">{{ animal.name }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">ESPÉCIE</span>
+                            <span class="info-value">{{ animal.species }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">RAÇA</span>
+                            <span class="info-value">{{ animal.race|default:"—" }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">IDADE</span>
+                            <span class="info-value">{% if animal.age %}{{ animal.age }} anos{% else %}—{% endif %}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">SEXO</span>
+                            <span class="info-value">{{ animal.get_gender_display_label }}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">TUTOR</span>
+                            <span class="info-value">{{ animal.owner.name }}</span>
+                        </div>
+                    </div>
+                    <div class="info-observations">
+                        <span class="info-label">OBSERVAÇÕES</span>
+                        <span class="info-value">{{ animal.observations|default:"—" }}</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
