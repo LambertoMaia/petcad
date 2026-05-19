@@ -1,4 +1,4 @@
-{% load static %}
+{% load static petcad_extras %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -42,6 +42,7 @@
         </aside>
 
         <main class="main-content">
+            {% include 'petcad/_messages.html' %}
             <div class="detail-page-header">
                 <button type="button" class="btn-back" onclick="window.location.href='{% url 'tutores' %}'">
                     <i class="ph ph-arrow-left"></i>
@@ -61,12 +62,13 @@
                     <button type="button" class="btn-profile-edit" onclick="window.location.href='{% url 'editar_tutor' tutor.pk %}'">
                         <i class="ph-fill ph-pencil-simple"></i> Editar
                     </button>
-                    <form method="post" action="{% url 'excluir_tutor' tutor.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-profile-delete">
-                            <i class="ph-fill ph-trash"></i> Excluir
-                        </button>
-                    </form>
+                    <button type="button"
+                            class="btn-profile-delete btn-open-delete"
+                            data-delete-url="{% url 'excluir_tutor' tutor.pk %}"
+                            data-delete-name="{{ tutor.name }}"
+                            data-delete-type="tutor">
+                        <i class="ph-fill ph-trash"></i> Excluir
+                    </button>
                 </div>
 
                 <div class="info-card">
@@ -78,7 +80,7 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">CPF</span>
-                            <span class="info-value">{{ tutor.cpf }}</span>
+                            <span class="info-value">{{ tutor.cpf|cpf_format }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">E-MAIL</span>
@@ -86,11 +88,11 @@
                         </div>
                         <div class="info-item">
                             <span class="info-label">TELEFONE</span>
-                            <span class="info-value">{{ tutor.telephone }}</span>
+                            <span class="info-value">{{ tutor.telephone|phone_format }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">CEP</span>
-                            <span class="info-value">{{ tutor.cep|default:"—" }}</span>
+                            <span class="info-value">{{ tutor.cep|cep_format|default:"—" }}</span>
                         </div>
                         <div class="info-item">
                             <span class="info-label">CIDADE/UF</span>
@@ -103,7 +105,40 @@
                     </div>
                 </div>
             </div>
+
+            {% if tutor.animals.all %}
+            <div class="info-card tutor-pets-card">
+                <h3 class="info-section-title">PETS VINCULADOS</h3>
+                <div class="table-container">
+                    <table class="pets-table">
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Espécie</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for pet in tutor.animals.all %}
+                            <tr>
+                                <td>{{ pet.name }}</td>
+                                <td>{{ pet.species }}</td>
+                                <td>
+                                    <button type="button" class="btn-action btn-ver" onclick="window.location.href='{% url 'ver_pet' pet.pk %}'">
+                                        <i class="ph-fill ph-eye"></i> Ver
+                                    </button>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            {% endif %}
         </main>
     </div>
+
+    {% include 'petcad/_delete_modal.html' %}
+    <script src="{% static 'petcad/js/delete_confirm.js' %}"></script>
 </body>
 </html>

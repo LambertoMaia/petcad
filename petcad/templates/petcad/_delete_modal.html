@@ -1,0 +1,48 @@
+<div class="delete-modal-overlay" id="delete-modal" aria-hidden="true">
+    <div class="delete-modal" role="dialog" aria-labelledby="delete-modal-title" aria-modal="true">
+        <button type="button" class="delete-modal-close" id="delete-modal-close" aria-label="Fechar">
+            <i class="ph ph-x"></i>
+        </button>
+
+        <div class="delete-modal-icon">
+            <i class="ph-fill ph-warning"></i>
+        </div>
+
+        <h3 class="delete-modal-title" id="delete-modal-title">
+            Excluir <span id="delete-modal-name"></span>?
+        </h3>
+        <p class="delete-modal-text">
+            Você está prestes a excluir este <span id="delete-modal-type-label">registro</span>.
+            Esta ação é permanente e não pode ser desfeita.
+        </p>
+
+        <form method="post" id="delete-modal-form" class="delete-modal-form">
+            {% csrf_token %}
+            <input type="hidden" name="next" id="delete-modal-next" value="">
+
+            <label for="delete-modal-password" class="delete-modal-label">
+                <i class="ph ph-lock-key"></i>
+                Confirme com sua senha de administrador
+            </label>
+            <input
+                type="password"
+                name="password"
+                id="delete-modal-password"
+                class="delete-modal-input"
+                placeholder="Digite sua senha"
+                autocomplete="current-password"
+                required
+            >
+
+            <div class="delete-modal-actions">
+                <button type="button" class="delete-modal-cancel" id="delete-modal-cancel">
+                    Cancelar
+                </button>
+                <button type="submit" class="delete-modal-confirm">
+                    <i class="ph-fill ph-trash"></i>
+                    Excluir permanentemente
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

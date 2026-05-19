@@ -42,6 +42,7 @@
         </aside>
 
         <main class="main-content">
+            {% include 'petcad/_messages.html' %}
             <div class="detail-page-header">
                 <button type="button" class="btn-back" onclick="window.location.href='{% url 'todos_pets' %}'">
                     <i class="ph ph-arrow-left"></i>
@@ -61,12 +62,13 @@
                     <button type="button" class="btn-profile-edit" onclick="window.location.href='{% url 'editar_pet' animal.pk %}'">
                         <i class="ph-fill ph-pencil-simple"></i> Editar
                     </button>
-                    <form method="post" action="{% url 'excluir_pet' animal.pk %}" onsubmit="return confirm('Excluir {{ animal.name }}?');">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-profile-delete">
-                            <i class="ph-fill ph-trash"></i> Excluir
-                        </button>
-                    </form>
+                    <button type="button"
+                            class="btn-profile-delete btn-open-delete"
+                            data-delete-url="{% url 'excluir_pet' animal.pk %}"
+                            data-delete-name="{{ animal.name }}"
+                            data-delete-type="pet">
+                        <i class="ph-fill ph-trash"></i> Excluir
+                    </button>
                 </div>
 
                 <div class="info-card">
@@ -105,5 +107,8 @@
             </div>
         </main>
     </div>
+
+    {% include 'petcad/_delete_modal.html' %}
+    <script src="{% static 'petcad/js/delete_confirm.js' %}"></script>
 </body>
 </html>

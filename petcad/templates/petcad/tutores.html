@@ -1,4 +1,4 @@
-{% load static %}
+{% load static petcad_extras %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -42,23 +42,21 @@
         </aside>
 
         <main class="main-content">
+            {% include 'petcad/_messages.html' %}
             <div class="content-header">
                 <div>
                     <h2>Tutores cadastrados</h2>
-                    <p class="subtitle">3 tutores encontrados</p>
+                    <p class="subtitle">{{ tutors|length }} tutor{{ tutors|length|pluralize:"es" }} encontrado{{ tutors|length|pluralize }}</p>
                 </div>
                 <button type="button" class="btn-novo-tutor-content" onclick="window.location.href='{% url 'novo_tutor' %}'">+ Novo tutor</button>
             </div>
 
-            <div class="controls-bar">
+            <form method="get" class="controls-bar">
                 <div class="search-box">
                     <i class="ph ph-magnifying-glass"></i>
-                    <input type="text" placeholder="Buscar tutor por nome...">
+                    <input type="text" name="q" value="{{ search }}" placeholder="Buscar tutor por nome...">
                 </div>
-                <button type="button" class="btn-filter">
-                    <i class="ph ph-sliders-horizontal"></i> Filtrar
-                </button>
-            </div>
+            </form>
 
             <div class="table-container">
                 <table class="pets-table">
@@ -73,52 +71,39 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for tutor in tutors %}
                         <tr>
-                            <td>May Vitória</td>
-                            <td>000.000.000-01</td>
-                            <td>Rua SBL, 123 — Olinda/PE</td>
-                            <td>(81) 99999-0001</td>
-                            <td><span class="pet-count">1 pet</span></td>
+                            <td>{{ tutor.name }}</td>
+                            <td>{{ tutor.cpf|cpf_format }}</td>
+                            <td>{{ tutor.formatted_address|default:"—" }}</td>
+                            <td>{{ tutor.telephone|phone_format }}</td>
+                            <td><span class="pet-count">{{ tutor.pet_count }} pet{{ tutor.pet_count|pluralize }}</span></td>
                             <td>
                                 <div class="actions">
-                                    <button type="button" class="btn-action btn-ver"><i class="ph-fill ph-eye"></i> Ver</button>
-                                    <button type="button" class="btn-action btn-editar"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
-                                    <button type="button" class="btn-action btn-excluir"><i class="ph-fill ph-trash"></i> Excluir</button>
+                                    <button type="button" class="btn-action btn-ver" onclick="window.location.href='{% url 'ver_tutor' tutor.pk %}'"><i class="ph-fill ph-eye"></i> Ver</button>
+                                    <button type="button" class="btn-action btn-editar" onclick="window.location.href='{% url 'editar_tutor' tutor.pk %}'"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
+                                    <button type="button"
+                                            class="btn-action btn-excluir btn-open-delete"
+                                            data-delete-url="{% url 'excluir_tutor' tutor.pk %}"
+                                            data-delete-name="{{ tutor.name }}"
+                                            data-delete-type="tutor">
+                                        <i class="ph-fill ph-trash"></i> Excluir
+                                    </button>
                                 </div>
                             </td>
                         </tr>
+                        {% empty %}
                         <tr>
-                            <td>Selena</td>
-                            <td>000.000.000-02</td>
-                            <td>Av. Norte, 456 — Recife/PE</td>
-                            <td>(81) 99999-0002</td>
-                            <td><span class="pet-count">2 pets</span></td>
-                            <td>
-                                <div class="actions">
-                                    <button type="button" class="btn-action btn-ver"><i class="ph-fill ph-eye"></i> Ver</button>
-                                    <button type="button" class="btn-action btn-editar"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
-                                    <button type="button" class="btn-action btn-excluir"><i class="ph-fill ph-trash"></i> Excluir</button>
-                                </div>
-                            </td>
+                            <td colspan="6">Nenhum tutor cadastrado.</td>
                         </tr>
-                        <tr>
-                            <td>Carlos Souza</td>
-                            <td>000.000.000-03</td>
-                            <td>Rua Boa Vista, 789 — Paulista/PE</td>
-                            <td>(81) 99999-0003</td>
-                            <td><span class="pet-count">1 pet</span></td>
-                            <td>
-                                <div class="actions">
-                                    <button type="button" class="btn-action btn-ver"><i class="ph-fill ph-eye"></i> Ver</button>
-                                    <button type="button" class="btn-action btn-editar"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
-                                    <button type="button" class="btn-action btn-excluir"><i class="ph-fill ph-trash"></i> Excluir</button>
-                                </div>
-                            </td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </main>
     </div>
+
+    {% include 'petcad/_delete_modal.html' %}
+    <script src="{% static 'petcad/js/delete_confirm.js' %}"></script>
 </body>
 </html>

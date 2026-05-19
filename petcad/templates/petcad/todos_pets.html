@@ -47,20 +47,22 @@
         </aside>
 
         <main class="main-content">
+            {% include 'petcad/_messages.html' %}
             <div class="content-header">
                 <div>
                     <h2>Pets cadastrados</h2>
-                    <p class="subtitle">3 pets encontrados</p>
+                    <p class="subtitle">{{ pets|length }} pet{{ pets|length|pluralize }} encontrado{{ pets|length|pluralize }}</p>
                 </div>
                 <button type="button" class="btn-novo-pet-content" onclick="window.location.href='{% url 'novo_pet' %}'">+ Novo pet</button>
             </div>
 
-            <div class="controls-bar">
+            <form method="get" class="controls-bar">
+                {% if active_species %}<input type="hidden" name="species" value="{{ active_species }}">{% endif %}
                 <div class="search-box">
                     <i class="ph ph-magnifying-glass"></i>
-                    <input type="text" placeholder="Buscar pet por nome...">
+                    <input type="text" name="q" value="{{ search }}" placeholder="Buscar pet por nome...">
                 </div>
-            </div>
+            </form>
 
             <div class="table-container">
                 <table class="pets-table">
@@ -76,70 +78,45 @@
                         </tr>
                     </thead>
                     <tbody>
+                        {% for pet in pets %}
                         <tr>
                             <td>
                                 <div class="pet-info">
-                                    <div class="pet-avatar">🐶</div>
-                                    <span>Theo</span>
+                                    <div class="pet-avatar">🐾</div>
+                                    <span>{{ pet.name }}</span>
                                 </div>
                             </td>
-                            <td>Cão</td>
-                            <td>SRD</td>
-                            <td>3 anos</td>
-                            <td><span class="badge badge-macho">Macho</span></td>
-                            <td>May Vitória</td>
+                            <td>{{ pet.species }}</td>
+                            <td>{{ pet.race|default:"—" }}</td>
+                            <td>{% if pet.age %}{{ pet.age }} anos{% else %}—{% endif %}</td>
+                            <td><span class="badge {% if pet.gender == 0 %}badge-macho{% else %}badge-femea{% endif %}">{{ pet.get_gender_display_label }}</span></td>
+                            <td>{{ pet.owner.name }}</td>
                             <td>
                                 <div class="actions">
-                                    <button type="button" class="btn-action btn-ver" onclick="window.location.href='{% url 'ver_pet' %}'"><i class="ph-fill ph-eye"></i> Ver</button>
-                                    <button type="button" class="btn-action btn-editar" onclick="window.location.href='{% url 'editar_pet' %}'"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
-                                    <button type="button" class="btn-action btn-excluir"><i class="ph-fill ph-trash"></i> Excluir</button>
+                                    <button type="button" class="btn-action btn-ver" onclick="window.location.href='{% url 'ver_pet' pet.pk %}'"><i class="ph-fill ph-eye"></i> Ver</button>
+                                    <button type="button" class="btn-action btn-editar" onclick="window.location.href='{% url 'editar_pet' pet.pk %}'"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
+                                    <button type="button"
+                                            class="btn-action btn-excluir btn-open-delete"
+                                            data-delete-url="{% url 'excluir_pet' pet.pk %}"
+                                            data-delete-name="{{ pet.name }}"
+                                            data-delete-type="pet">
+                                        <i class="ph-fill ph-trash"></i> Excluir
+                                    </button>
                                 </div>
                             </td>
                         </tr>
+                        {% empty %}
                         <tr>
-                            <td>
-                                <div class="pet-info">
-                                    <div class="pet-avatar">🐱</div>
-                                    <span>Baituxe</span>
-                                </div>
-                            </td>
-                            <td>Gato</td>
-                            <td>SRD</td>
-                            <td>2 anos</td>
-                            <td><span class="badge badge-macho">Macho</span></td>
-                            <td>Selena</td>
-                            <td>
-                                <div class="actions">
-                                    <button type="button" class="btn-action btn-ver"><i class="ph-fill ph-eye"></i> Ver</button>
-                                    <button type="button" class="btn-action btn-editar"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
-                                    <button type="button" class="btn-action btn-excluir"><i class="ph-fill ph-trash"></i> Excluir</button>
-                                </div>
-                            </td>
+                            <td colspan="7">Nenhum pet cadastrado.</td>
                         </tr>
-                        <tr>
-                            <td>
-                                <div class="pet-info">
-                                    <div class="pet-avatar">🐦</div>
-                                    <span>Pipoca</span>
-                                </div>
-                            </td>
-                            <td>Pássaro</td>
-                            <td>Calopsita</td>
-                            <td>1 ano</td>
-                            <td><span class="badge badge-femea">Fêmea</span></td>
-                            <td>Carlos Souza</td>
-                            <td>
-                                <div class="actions">
-                                    <button type="button" class="btn-action btn-ver"><i class="ph-fill ph-eye"></i> Ver</button>
-                                    <button type="button" class="btn-action btn-editar"><i class="ph-fill ph-pencil-simple"></i> Editar</button>
-                                    <button type="button" class="btn-action btn-excluir"><i class="ph-fill ph-trash"></i> Excluir</button>
-                                </div>
-                            </td>
-                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </main>
     </div>
+
+    {% include 'petcad/_delete_modal.html' %}
+    <script src="{% static 'petcad/js/delete_confirm.js' %}"></script>
 </body>
 </html>

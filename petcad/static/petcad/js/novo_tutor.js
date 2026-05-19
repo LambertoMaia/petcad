@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const cpfInput = document.getElementById('tutor-cpf');
     const telInput = document.getElementById('tutor-telefone');
     const cepInput = document.getElementById('tutor-cep');
-    const form = document.getElementById('form-novo-tutor');
 
     if (cpfInput) {
         cpfInput.addEventListener('input', (e) => {
@@ -53,12 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (digits.length === 8) {
                 fetchAddress(digits);
             }
-        });
-    }
-
-    if (form) {
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
         });
     }
 });

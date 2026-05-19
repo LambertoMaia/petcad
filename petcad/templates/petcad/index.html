@@ -27,15 +27,7 @@
                     <div class="auth-tab active" id="tab-login" onclick="switchTab('login')">Login Administrador</div>
                 </div>
 
-                {% if messages %}
-                <div class="messages">
-                    {% for message in messages %}
-                    <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
-                        {{ message }}
-                    </div>
-                    {% endfor %}
-                </div>
-                {% endif %}
+                {% include 'petcad/_messages.html' %}
                 <!-- Login -->
                 <form id="form-login" class="auth-form active" method="POST" action="{% url 'user_login' %}">
                     {% csrf_token %}

@@ -42,6 +42,7 @@
         </aside>
 
         <main class="main-content">
+            {% include 'petcad/_messages.html' %}
             <div class="detail-page-header">
                 <button type="button" class="btn-back" onclick="window.location.href='{% url 'ver_tutor' tutor.pk %}'">
                     <i class="ph ph-arrow-left"></i>
@@ -53,66 +54,9 @@
             </div>
 
             <div class="form-card">
-                <form class="pet-form pet-form-edit tutor-form" id="form-editar-tutor">
-                    <h3 class="form-section-title">DADOS PESSOAIS</h3>
-
-                    <div class="form-group form-group-full">
-                        <label>Nome completo <span class="required">* obrigatório</span></label>
-                        <input type="text" id="tutor-nome" value="{{ tutor.name }}" required>
-                    </div>
-
-                    <div class="form-row-3">
-                        <div class="form-group">
-                            <label>CPF <span class="required">* obrigatório</span></label>
-                            <input type="text" id="tutor-cpf" value="{{ tutor.cpf }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Telefone <span class="required">* obrigatório</span></label>
-                            <input type="text" id="tutor-telefone" value="{{ tutor.telephone }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label>E-mail <span class="required">* obrigatório</span></label>
-                            <input type="email" id="tutor-email" value="{{ tutor.email }}" required>
-                        </div>
-                    </div>
-
-                    <h3 class="form-section-title">ENDEREÇO</h3>
-
-                    <div class="form-group form-group-cep">
-                        <label>CEP <span class="required">* obrigatório</span></label>
-                        <input type="text" id="tutor-cep" value="{{ tutor.cep }}" required>
-                    </div>
-
-                    <div class="form-group form-group-full">
-                        <label>Logradouro <span class="required">* obrigatório</span></label>
-                        <input type="text" id="tutor-logradouro" value="{{ tutor.street }}" required>
-                    </div>
-
-                    <div class="form-row-num">
-                        <div class="form-group">
-                            <label>Número <span class="required">* obrigatório</span></label>
-                            <input type="text" id="tutor-numero" value="{{ tutor.number }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Complemento <span class="optional">(opcional)</span></label>
-                            <input type="text" id="tutor-complemento" value="{{ tutor.complement }}">
-                        </div>
-                    </div>
-
-                    <div class="form-row-3">
-                        <div class="form-group">
-                            <label>Bairro <span class="required">* obrigatório</span></label>
-                            <input type="text" id="tutor-bairro" value="{{ tutor.neighborhood }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Cidade <span class="required">* obrigatório</span></label>
-                            <input type="text" id="tutor-cidade" value="{{ tutor.city }}" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Estado <span class="required">* obrigatório</span></label>
-                            <input type="text" id="tutor-estado" value="{{ tutor.state }}" required maxlength="2">
-                        </div>
-                    </div>
+                <form method="post" class="pet-form pet-form-edit tutor-form" id="form-editar-tutor">
+                    {% csrf_token %}
+                    {% include 'petcad/_tutor_form_fields.html' %}
 
                     <div class="form-actions">
                         <button type="button" class="btn-cancel" onclick="window.location.href='{% url 'ver_tutor' tutor.pk %}'">Cancelar</button>

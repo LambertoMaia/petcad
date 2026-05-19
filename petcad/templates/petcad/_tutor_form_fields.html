@@ -1,0 +1,78 @@
+<h3 class="form-section-title">DADOS PESSOAIS</h3>
+
+{% if form.non_field_errors %}
+<div class="form-errors">
+    {% for error in form.non_field_errors %}
+    <p>{{ error }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="form-group form-group-full">
+    <label for="tutor-nome">Nome completo <span class="required">* obrigatório</span></label>
+    {{ form.name }}
+    {% for error in form.name.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+</div>
+
+<div class="form-row-3">
+    <div class="form-group">
+        <label for="tutor-cpf">CPF <span class="required">* obrigatório</span></label>
+        {{ form.cpf }}
+        {% for error in form.cpf.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="form-group">
+        <label for="tutor-telefone">Telefone <span class="required">* obrigatório</span></label>
+        {{ form.telephone }}
+        {% for error in form.telephone.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="form-group">
+        <label for="tutor-email">E-mail <span class="required">* obrigatório</span></label>
+        {{ form.email }}
+        {% for error in form.email.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+</div>
+
+<h3 class="form-section-title">ENDEREÇO</h3>
+
+<div class="form-group form-group-cep">
+    <label for="tutor-cep">CEP <span class="required">* obrigatório</span></label>
+    {{ form.cep }}
+    {% for error in form.cep.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+</div>
+
+<div class="form-group form-group-full">
+    <label for="tutor-logradouro">Logradouro <span class="required">* obrigatório</span></label>
+    {{ form.street }}
+    {% for error in form.street.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+</div>
+
+<div class="form-row-num">
+    <div class="form-group">
+        <label for="tutor-numero">Número <span class="required">* obrigatório</span></label>
+        {{ form.number }}
+        {% for error in form.number.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="form-group">
+        <label for="tutor-complemento">Complemento <span class="optional">(opcional)</span></label>
+        {{ form.complement }}
+        {% for error in form.complement.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+</div>
+
+<div class="form-row-3">
+    <div class="form-group">
+        <label for="tutor-bairro">Bairro <span class="required">* obrigatório</span></label>
+        {{ form.neighborhood }}
+        {% for error in form.neighborhood.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="form-group">
+        <label for="tutor-cidade">Cidade <span class="required">* obrigatório</span></label>
+        {{ form.city }}
+        {% for error in form.city.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="form-group">
+        <label for="tutor-estado">Estado <span class="required">* obrigatório</span></label>
+        {{ form.state }}
+        {% for error in form.state.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+</div>

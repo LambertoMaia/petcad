@@ -1,0 +1,65 @@
+<h3 class="form-section-title">DADOS DO PET</h3>
+
+{% if form.non_field_errors %}
+<div class="form-errors">
+    {% for error in form.non_field_errors %}
+    <p>{{ error }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="form-row-3">
+    <div class="form-group">
+        <label for="pet-nome">Nome do pet <span class="required">* obrigatório</span></label>
+        {{ form.name }}
+        {% for error in form.name.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="form-group">
+        <label for="pet-especie">Espécie <span class="required">* obrigatório</span></label>
+        {{ form.species }}
+        {% for error in form.species.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="form-group">
+        <label for="pet-raca">Raça <span class="optional">(opcional)</span></label>
+        {{ form.race }}
+        {% for error in form.race.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+</div>
+
+<div class="form-row-3">
+    <div class="form-group">
+        <label for="pet-idade">Idade <span class="optional">(opcional)</span></label>
+        {{ form.age }}
+        {% for error in form.age.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="form-group">
+        <label for="pet-sexo">Sexo <span class="required">* obrigatório</span></label>
+        {{ form.gender }}
+        {% for error in form.gender.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="form-group">
+        <label for="pet-observacoes">Observações <span class="optional">(opcional)</span></label>
+        {{ form.observations }}
+        {% for error in form.observations.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+</div>
+
+<h3 class="form-section-title">VÍNCULO COM TUTOR</h3>
+
+<div class="form-group form-group-full">
+    <label for="pet-tutor-select">Selecionar tutor <span class="required">* obrigatório</span></label>
+    {{ form.owner }}
+    {% for error in form.owner.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    <p class="form-hint">
+        O tutor precisa estar cadastrado antes.
+        <a href="{% url 'novo_tutor' %}" class="link-inline">Cadastrar tutor →</a>
+    </p>
+</div>
+
+<div class="form-group form-group-full">
+    <label>Tutor selecionado</label>
+    <div class="tutor-selected-box{% if selected_tutor_name or form.owner.value %} has-tutor{% endif %}" id="tutor-selected-box">
+        <i class="ph ph-user"></i>
+        <span id="tutor-selected-name">{% firstof selected_tutor_name "Nenhum tutor selecionado" %}</span>
+    </div>
+</div>

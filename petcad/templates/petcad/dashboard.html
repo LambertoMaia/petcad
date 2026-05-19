@@ -1,4 +1,4 @@
-{% load static %}
+{% load static petcad_extras %}
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -42,6 +42,7 @@
         </aside>
 
         <main class="main-content">
+            {% include 'petcad/_messages.html' %}
             <div class="home-header">
                 <div>
                     <h2>Bem-vinda, {{ admin_name }} 👋</h2>
@@ -56,23 +57,23 @@
             <div class="stats-grid">
                 <div class="stat-card">
                     <span class="stat-label">TOTAL DE TUTORES</span>
-                    <span class="stat-value">12</span>
+                    <span class="stat-value">{{ tutor_count }}</span>
                     <span class="stat-meta">👤 tutores cadastrados</span>
                 </div>
                 <div class="stat-card">
                     <span class="stat-label">TOTAL DE PETS</span>
-                    <span class="stat-value">28</span>
+                    <span class="stat-value">{{ pet_count }}</span>
                     <span class="stat-meta">🐾 pets cadastrados</span>
                 </div>
                 <div class="stat-card">
                     <span class="stat-label">CÃES</span>
-                    <span class="stat-value">14</span>
-                    <span class="stat-meta">🐶 50% dos pets</span>
+                    <span class="stat-value">{{ dog_count }}</span>
+                    <span class="stat-meta">🐶 {% if pet_count %}{{ dog_pct }}% dos pets{% else %}0% dos pets{% endif %}</span>
                 </div>
                 <div class="stat-card">
                     <span class="stat-label">GATOS</span>
-                    <span class="stat-value">10</span>
-                    <span class="stat-meta">🐱 36% dos pets</span>
+                    <span class="stat-value">{{ cat_count }}</span>
+                    <span class="stat-meta">🐱 {% if pet_count %}{{ cat_pct }}% dos pets{% else %}0% dos pets{% endif %}</span>
                 </div>
             </div>
 
@@ -93,24 +94,18 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for tutor in recent_tutors %}
                                 <tr>
-                                    <td>May Vitória</td>
-                                    <td>(81) 99999-0001</td>
-                                    <td><span class="pet-count">1 pet</span></td>
-                                    <td><button type="button" class="btn-ver-sm">Ver</button></td>
+                                    <td>{{ tutor.name }}</td>
+                                    <td>{{ tutor.telephone|phone_format }}</td>
+                                    <td><span class="pet-count">{{ tutor.pet_count }} pet{{ tutor.pet_count|pluralize }}</span></td>
+                                    <td><button type="button" class="btn-ver-sm" onclick="window.location.href='{% url 'ver_tutor' tutor.pk %}'">Ver</button></td>
                                 </tr>
+                                {% empty %}
                                 <tr>
-                                    <td>Selena</td>
-                                    <td>(81) 99999-0002</td>
-                                    <td><span class="pet-count">2 pets</span></td>
-                                    <td><button type="button" class="btn-ver-sm">Ver</button></td>
+                                    <td colspan="4">Nenhum tutor cadastrado.</td>
                                 </tr>
-                                <tr>
-                                    <td>Carlos Souza</td>
-                                    <td>(81) 99999-0003</td>
-                                    <td><span class="pet-count">1 pet</span></td>
-                                    <td><button type="button" class="btn-ver-sm">Ver</button></td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -132,39 +127,23 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {% for pet in recent_pets %}
                                 <tr>
                                     <td>
                                         <div class="pet-info">
-                                            <div class="pet-avatar">🐶</div>
-                                            <span>Theo</span>
+                                            <div class="pet-avatar">🐾</div>
+                                            <span>{{ pet.name }}</span>
                                         </div>
                                     </td>
-                                    <td>Cão</td>
-                                    <td>May Vitória</td>
-                                    <td><button type="button" class="btn-ver-sm" onclick="window.location.href='{% url 'ver_pet' %}'">Ver</button></td>
+                                    <td>{{ pet.species }}</td>
+                                    <td>{{ pet.owner.name }}</td>
+                                    <td><button type="button" class="btn-ver-sm" onclick="window.location.href='{% url 'ver_pet' pet.pk %}'">Ver</button></td>
                                 </tr>
+                                {% empty %}
                                 <tr>
-                                    <td>
-                                        <div class="pet-info">
-                                            <div class="pet-avatar">🐱</div>
-                                            <span>Baituxe</span>
-                                        </div>
-                                    </td>
-                                    <td>Gato</td>
-                                    <td>Selena</td>
-                                    <td><button type="button" class="btn-ver-sm">Ver</button></td>
+                                    <td colspan="4">Nenhum pet cadastrado.</td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <div class="pet-info">
-                                            <div class="pet-avatar">🐦</div>
-                                            <span>Pipoca</span>
-                                        </div>
-                                    </td>
-                                    <td>Pássaro</td>
-                                    <td>Carlos Souza</td>
-                                    <td><button type="button" class="btn-ver-sm">Ver</button></td>
-                                </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
