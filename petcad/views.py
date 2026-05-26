@@ -6,9 +6,9 @@ from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.db.models import Count, Q
 
-from .models import Tutor, Animal
-from .utils import filter_animals_by_species
-from .forms import TutorForm, PetForm
+from .models import Tutor, Animal, Vaccination
+from .utils import filter_animals_by_species, build_vaccination_overview, get_species_emoji
+from .forms import TutorForm, PetForm, VaccinationForm
 
 
 def _selected_tutor_name(form):
@@ -206,8 +206,61 @@ def novo_pet(request):
 
 @login_required
 def ver_pet(request, pk):
+    animal = get_object_or_404(
+        Animal.objects.select_related('owner').prefetch_related('vaccinations'),
+        pk=pk,
+    )
+    vaccination_rows, vaccination_counts = build_vaccination_overview(animal)
+    return render(request, 'petcad/ver_pet.html', {
+        'animal': animal,
+        'vaccination_rows': vaccination_rows,
+        'vaccination_counts': vaccination_counts,
+        'species_emoji': get_species_emoji(animal.species),
+    })
+
+
+@login_required
+def carteira_vacinas(request, pk):
+    animal = get_object_or_404(
+        Animal.objects.select_related('owner').prefetch_related('vaccinations'),
+        pk=pk,
+    )
+    vaccinations = animal.vaccinations.all()
+    return render(request, 'petcad/carteira_vacinas.html', {
+        'animal': animal,
+        'vaccinations': vaccinations,
+        'species_emoji': get_species_emoji(animal.species),
+    })
+
+
+@login_required
+def registrar_vacina(request, pk):
     animal = get_object_or_404(Animal.objects.select_related('owner'), pk=pk)
-    return render(request, 'petcad/ver_pet.html', {'animal': animal})
+    if request.method == 'POST':
+        form = VaccinationForm(request.POST)
+        if form.is_valid():
+            vaccination = form.save(commit=False)
+            vaccination.animal = animal
+            vaccination.save()
+            messages.success(request, f'Vacina {vaccination.name} registrada para {animal.name}.')
+            return redirect('ver_pet', pk=animal.pk)
+    else:
+        form = VaccinationForm()
+    return render(request, 'petcad/registrar_vacina.html', {
+        'animal': animal,
+        'form': form,
+        'species_emoji': get_species_emoji(animal.species),
+        'vaccine_suggestions': _vaccine_suggestions(animal),
+    })
+
+
+def _vaccine_suggestions(animal):
+    from .utils import COMMON_VACCINES, get_species_group
+
+    group = get_species_group(animal.species)
+    if group:
+        return COMMON_VACCINES[group]
+    return ['Antirrábica', 'Polivalente V10', 'Gripe Canina', 'Giárdia']
 
 
 @login_required

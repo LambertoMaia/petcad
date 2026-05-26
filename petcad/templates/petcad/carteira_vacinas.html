@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PetCad - Carteira de Vacinação">
+    <title>PetCad | Carteira de vacinação — {{ animal.name }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="{% static 'petcad/css/dashboard.css' %}" rel="stylesheet" />
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+</head>
+<body>
+    {% include 'petcad/NavBarPets.html' %}
+
+    <div class="dashboard-layout">
+        <aside class="sidebar">
+            <ul class="sidebar-menu">
+                <li>
+                    <a href="{% url 'dashboard' %}">
+                        <div class="emoji"><i class="ph ph-house"></i></div> Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'tutores' %}">
+                        <div class="emoji"><i class="ph ph-user"></i></div> Tutores
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="{% url 'todos_pets' %}">
+                        <div class="emoji"><i class="ph-fill ph-paw-print"></i></div> Pets
+                    </a>
+                </li>
+                <li>
+                    <a href="#">
+                        <div class="emoji"><i class="ph ph-gear"></i></div> Configurações
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            {% include 'petcad/_messages.html' %}
+            <div class="detail-page-header">
+                <button type="button" class="btn-back" onclick="window.location.href='{% url 'ver_pet' animal.pk %}'">
+                    <i class="ph ph-arrow-left"></i>
+                </button>
+                <div>
+                    <h2>Carteira de vacinação</h2>
+                    <p class="subtitle">Histórico completo de {{ animal.name }}</p>
+                </div>
+            </div>
+
+            <div class="form-card vaccination-card-full">
+                <div class="vaccination-card-header">
+                    <div class="pet-form-chip">
+                        <div class="pet-form-chip-avatar">{{ species_emoji }}</div>
+                        <div>
+                            <strong>{{ animal.name }}</strong>
+                            <span>{{ animal.species }}{% if animal.race %} · {{ animal.race }}{% endif %}</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-save btn-save-edit btn-sm" onclick="window.location.href='{% url 'registrar_vacina' animal.pk %}'">
+                        <i class="ph ph-plus"></i> Registrar vacina
+                    </button>
+                </div>
+
+                <div class="table-container">
+                    <table class="vaccination-table">
+                        <thead>
+                            <tr>
+                                <th>Vacina</th>
+                                <th>Tipo</th>
+                                <th>Aplicação</th>
+                                <th>Próxima dose</th>
+                                <th>Observações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for vaccination in vaccinations %}
+                            <tr>
+                                <td><strong>{{ vaccination.name }}</strong></td>
+                                <td>{{ vaccination.get_vaccine_type_display|default:"—" }}</td>
+                                <td>{{ vaccination.application_date|date:"d/m/Y" }}</td>
+                                <td>{% if vaccination.next_dose_date %}{{ vaccination.next_dose_date|date:"d/m/Y" }}{% else %}—{% endif %}</td>
+                                <td>{{ vaccination.observations|default:"—" }}</td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="5">Nenhuma vacina registrada ainda.</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

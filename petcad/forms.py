@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from .models import Tutor, Animal
+from .models import Tutor, Animal, Vaccination
 from .utils import format_cep, format_cpf, format_phone, strip_digits
 
 
@@ -155,3 +155,48 @@ class PetForm(forms.ModelForm):
         if age is not None and age > 50:
             raise ValidationError('Informe uma idade válida (máx. 50 anos).')
         return age
+
+
+class VaccinationForm(forms.ModelForm):
+    class Meta:
+        model = Vaccination
+        fields = [
+            'name', 'vaccine_type', 'application_date', 'next_dose_date', 'observations',
+        ]
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'placeholder': 'Selecione (Antirrábica, Polivalente V10, Giárdia, ...)',
+                'id': 'vacina-nome',
+                'list': 'vacina-sugestoes',
+            }),
+            'vaccine_type': forms.Select(attrs={'id': 'vacina-tipo'}),
+            'application_date': forms.DateInput(attrs={
+                'type': 'date',
+                'id': 'vacina-aplicacao',
+            }),
+            'next_dose_date': forms.DateInput(attrs={
+                'type': 'date',
+                'id': 'vacina-proxima',
+            }),
+            'observations': forms.Textarea(attrs={
+                'rows': 4,
+                'placeholder': 'Ex: Veterinário responsável, lote da vacina...',
+                'id': 'vacina-observacoes',
+            }),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['vaccine_type'].required = False
+        self.fields['next_dose_date'].required = False
+        self.fields['observations'].required = False
+        self.fields['vaccine_type'].choices = [('', 'Obrigatória / Recomendada / Opcional')] + list(
+            Vaccination.VaccineType.choices
+        )
+
+    def clean_next_dose_date(self):
+        next_dose = self.cleaned_data.get('next_dose_date')
+        application_date = self.cleaned_data.get('application_date')
+        if next_dose and application_date and next_dose < application_date:
+            raise ValidationError('A próxima dose deve ser posterior à data de aplicação.')
+        return next_dose

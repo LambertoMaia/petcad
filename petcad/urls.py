@@ -14,6 +14,8 @@ urlpatterns = [
     path('pets/', views.todos_pets, name='todos_pets'),
     path('pets/novo/', views.novo_pet, name='novo_pet'),
     path('pets/<int:pk>/', views.ver_pet, name='ver_pet'),
+    path('pets/<int:pk>/vacinas/', views.carteira_vacinas, name='carteira_vacinas'),
+    path('pets/<int:pk>/vacinas/nova/', views.registrar_vacina, name='registrar_vacina'),
     path('pets/<int:pk>/editar/', views.editar_pet, name='editar_pet'),
     path('pets/<int:pk>/excluir/', views.excluir_pet, name='excluir_pet'),
 ]

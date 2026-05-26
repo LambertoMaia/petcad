@@ -49,13 +49,13 @@
                 </button>
                 <div>
                     <h2>Detalhes do pet</h2>
-                    <p class="subtitle">Informações completas do animal</p>
+                    <p class="subtitle">Informações completas do {{ animal.species|lower }}</p>
                 </div>
             </div>
 
             <div class="detail-layout">
                 <div class="profile-card">
-                    <div class="profile-avatar">🐾</div>
+                    <div class="profile-avatar">{{ species_emoji }}</div>
                     <h3 class="profile-name">{{ animal.name }}</h3>
                     <p class="profile-meta">{{ animal.species }}{% if animal.race %} · {{ animal.race }}{% endif %}</p>
                     <span class="badge {% if animal.gender == 0 %}badge-macho{% else %}badge-femea{% endif %}">{{ animal.get_gender_display_label }}</span>
@@ -102,6 +102,62 @@
                     <div class="info-observations">
                         <span class="info-label">OBSERVAÇÕES</span>
                         <span class="info-value">{{ animal.observations|default:"—" }}</span>
+                    </div>
+
+                    <div class="vaccination-section">
+                        <div class="vaccination-header">
+                            <h4 class="vaccination-title">
+                                <i class="ph-fill ph-syringe"></i> Vacinação
+                            </h4>
+                            <div class="vaccination-summary">
+                                <span class="vaccine-count vaccine-count-current">Em dia: {{ vaccination_counts.current }}</span>
+                                <span class="vaccine-count vaccine-count-expired">Vencidas: {{ vaccination_counts.expired }}</span>
+                                <span class="vaccine-count vaccine-count-missing">Em falta: {{ vaccination_counts.missing }}</span>
+                            </div>
+                        </div>
+
+                        <div class="table-container vaccination-table-wrap">
+                            <table class="vaccination-table">
+                                <thead>
+                                    <tr>
+                                        <th>Vacina</th>
+                                        <th>Esquema / Datas</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in vaccination_rows %}
+                                    <tr>
+                                        <td><strong>{{ row.name }}</strong></td>
+                                        <td class="vaccination-dates">
+                                            {% if row.record %}
+                                                Última: {{ row.record.application_date|date:"d/m/Y" }}
+                                                {% if row.record.next_dose_date %}
+                                                    → Próxima: {{ row.record.next_dose_date|date:"d/m/Y" }}
+                                                {% endif %}
+                                            {% else %}
+                                                <span class="vaccination-empty">Nenhum registro encontrado</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <span class="status-vaccine status-vaccine-{{ row.status }}">{{ row.status_label }}</span>
+                                        </td>
+                                    </tr>
+                                    {% empty %}
+                                    <tr>
+                                        <td colspan="3">Nenhuma vacina registrada.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="vaccination-footer">
+                            <a href="{% url 'carteira_vacinas' animal.pk %}" class="link-ver-todos">Ver carteira completa</a>
+                            <button type="button" class="btn-save btn-save-edit btn-sm" onclick="window.location.href='{% url 'registrar_vacina' animal.pk %}'">
+                                <i class="ph ph-plus"></i> Registrar vacina
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

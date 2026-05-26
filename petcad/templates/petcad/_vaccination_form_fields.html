@@ -1,0 +1,47 @@
+<h3 class="form-section-title">DADOS DA VACINA</h3>
+<p class="form-section-hint">Campos marcados com <span class="required">*</span> são obrigatórios</p>
+
+{% if form.non_field_errors %}
+<div class="form-errors">
+    {% for error in form.non_field_errors %}
+    <p>{{ error }}</p>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div class="form-row-2">
+    <div class="form-group">
+        <label for="vacina-nome">Nome da vacina <span class="required">* obrigatório</span></label>
+        {{ form.name }}
+        <datalist id="vacina-sugestoes">
+            {% for suggestion in vaccine_suggestions %}
+            <option value="{{ suggestion }}"></option>
+            {% endfor %}
+        </datalist>
+        {% for error in form.name.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="form-group">
+        <label for="vacina-tipo">Tipo</label>
+        {{ form.vaccine_type }}
+        {% for error in form.vaccine_type.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+</div>
+
+<div class="form-row-2">
+    <div class="form-group">
+        <label for="vacina-aplicacao">Data de aplicação <span class="required">* obrigatório</span></label>
+        {{ form.application_date }}
+        {% for error in form.application_date.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+    <div class="form-group">
+        <label for="vacina-proxima">Próxima dose <span class="optional">(opcional)</span></label>
+        {{ form.next_dose_date }}
+        {% for error in form.next_dose_date.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+</div>
+
+<div class="form-group form-group-full">
+    <label for="vacina-observacoes">Observações <span class="optional">(opcional)</span></label>
+    {{ form.observations }}
+    {% for error in form.observations.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+</div>

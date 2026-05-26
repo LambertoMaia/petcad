@@ -50,3 +50,29 @@ class Animal(models.Model):
 
     def __str__(self):
         return f'{self.name} ({self.species})'
+
+
+class Vaccination(models.Model):
+    class VaccineType(models.TextChoices):
+        REQUIRED = 'obrigatoria', 'Obrigatória'
+        RECOMMENDED = 'recomendada', 'Recomendada'
+        OPTIONAL = 'opcional', 'Opcional'
+
+    animal = models.ForeignKey(Animal, on_delete=models.CASCADE, related_name='vaccinations')
+    name = models.CharField(max_length=100)
+    vaccine_type = models.CharField(
+        max_length=20,
+        choices=VaccineType.choices,
+        blank=True,
+        default='',
+    )
+    application_date = models.DateField()
+    next_dose_date = models.DateField(null=True, blank=True)
+    observations = models.TextField(blank=True, default='')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-application_date', '-created_at']
+
+    def __str__(self):
+        return f'{self.name} — {self.animal.name}'

@@ -47,3 +47,97 @@ def filter_animals_by_species(queryset, species_key):
     if filter_q:
         return queryset.filter(filter_q)
     return queryset
+
+
+VACCINE_STATUS_CURRENT = 'current'
+VACCINE_STATUS_EXPIRED = 'expired'
+VACCINE_STATUS_MISSING = 'missing'
+
+VACCINE_STATUS_LABELS = {
+    VACCINE_STATUS_CURRENT: 'Em dia',
+    VACCINE_STATUS_EXPIRED: 'Vencida',
+    VACCINE_STATUS_MISSING: 'Em falta',
+}
+
+COMMON_VACCINES = {
+    'dog': ['Antirrábica', 'Polivalente V10', 'Gripe Canina', 'Giárdia'],
+    'cat': ['Antirrábica', 'Tríplice Felina', 'Leucose Felina'],
+}
+
+
+def get_species_group(species):
+    normalized = (species or '').lower()
+    if 'cão' in normalized or 'cao' in normalized:
+        return 'dog'
+    if 'gato' in normalized:
+        return 'cat'
+    return None
+
+
+def get_species_emoji(species):
+    group = get_species_group(species)
+    if group == 'dog':
+        return '🐶'
+    if group == 'cat':
+        return '🐱'
+    return '🐾'
+
+
+def vaccination_status(record, today=None):
+    from django.utils import timezone
+
+    if record is None:
+        return VACCINE_STATUS_MISSING
+    today = today or timezone.localdate()
+    if record.next_dose_date is None:
+        return VACCINE_STATUS_CURRENT
+    if record.next_dose_date >= today:
+        return VACCINE_STATUS_CURRENT
+    return VACCINE_STATUS_EXPIRED
+
+
+def get_latest_vaccinations(animal):
+    latest = {}
+    for vaccination in animal.vaccinations.all():
+        key = vaccination.name.strip().lower()
+        if key not in latest:
+            latest[key] = vaccination
+    return latest
+
+
+def build_vaccination_overview(animal, today=None):
+    from django.utils import timezone
+
+    today = today or timezone.localdate()
+    catalog = COMMON_VACCINES.get(get_species_group(animal.species), [])
+    latest = get_latest_vaccinations(animal)
+    rows = []
+    counts = {
+        VACCINE_STATUS_CURRENT: 0,
+        VACCINE_STATUS_EXPIRED: 0,
+        VACCINE_STATUS_MISSING: 0,
+    }
+
+    if catalog:
+        for name in catalog:
+            record = latest.get(name.lower())
+            status = vaccination_status(record, today)
+            counts[status] += 1
+            rows.append({
+                'name': name,
+                'record': record,
+                'status': status,
+                'status_label': VACCINE_STATUS_LABELS[status],
+            })
+    else:
+        for record in animal.vaccinations.all():
+            status = vaccination_status(record, today)
+            counts[status] += 1
+            rows.append({
+                'name': record.name,
+                'record': record,
+                'status': status,
+                'status_label': VACCINE_STATUS_LABELS[status],
+            })
+
+    return rows, counts

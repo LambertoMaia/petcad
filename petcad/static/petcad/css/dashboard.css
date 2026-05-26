@@ -686,6 +686,92 @@ body {
     gap: 0.35rem;
 }
 
+.info-vacinas {
+    color: #6982B5;
+}
+
+.info-vacinas hr {
+    margin: 10px 0 20px 0;
+}
+
+.right, .left {
+    width: 50%;
+}
+
+.right {
+    float: right;
+    text-align: right;
+}
+
+.left {
+    float: left;
+    text-align: left;
+}
+
+/* Tags */
+.tag {
+    padding: 0.1em;
+    font-weight: bold;
+    text-align: center;
+    border-radius: 10px;
+    width: 30%;
+    font-size: 0.9rem;
+}
+
+.info-vacinas div.right {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.info-vacinas div.left {
+    font-weight: bold;
+}
+
+.em-dia {
+    background-color: #ddfce6;
+    color: #16A34A;
+}
+.vencidas {
+    background:#fff9c2;
+    color:#d97706;
+}
+.em-falta {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+.status-circle { /* Estilização do contorno dos status na tabela*/
+    padding: .2rem .5rem;
+    border-radius: 20px;
+}
+
+.tabela-vacinas table { /* Tabela vacinas com título e vacinas tomadas */
+    width: 100%;
+    border: solid black 1px;
+    color: #a2a9b4;
+    font-size: .875rem;
+    font-weight: 700;
+    font-family: 'Segoe UI';
+    letter-spacing: 1px;
+}
+
+/* Tamanho das colunas das Tabelas */
+.tabela-vacinas th :nth-child(1), .tabela-vacinas td:nth-child(1){ 
+    justify-content: fe;
+    width: 40%;
+}
+.tabela-vacinas th :nth-child(2), .tabela-vacinas td:nth-child(2){
+    width: 40%;
+}
+.tabela-vacinas th :nth-child(3), .tabela-vacinas td:nth-child(3){
+    width: 20%;
+}
+
+.tabela-vacinas .descricao-vacina { /* Descrição localizada abaixo de cada vacina */
+
+}
+
 .required-mark {
     color: #E53935;
     font-weight: 600;
@@ -1235,4 +1321,219 @@ body.modal-open {
 
 .delete-modal-confirm:active {
     transform: scale(0.98);
+}
+
+.form-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+@media (max-width: 768px) {
+    .form-row-2 {
+        grid-template-columns: 1fr;
+    }
+}
+
+.form-section-hint {
+    font-size: 0.8rem;
+    color: #888;
+    margin: -0.25rem 0 1.25rem;
+}
+
+.pet-form-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 1rem 1.25rem;
+    background: #F8F9FC;
+    border: 1px solid #E8ECF4;
+    border-radius: 12px;
+    margin-bottom: 1.75rem;
+}
+
+.pet-form-chip-avatar {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    border-radius: 50%;
+    font-size: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.pet-form-chip strong {
+    display: block;
+    font-size: 0.95rem;
+    color: #1a1a1a;
+    margin-bottom: 0.15rem;
+}
+
+.pet-form-chip span {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.btn-save.btn-sm {
+    padding: 0.55rem 1rem;
+    font-size: 0.85rem;
+    width: auto;
+}
+
+.btn-save.btn-sm i {
+    font-size: 1rem;
+}
+
+.vaccination-section {
+    margin-top: 2rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid #EEEEEE;
+}
+
+.vaccination-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+}
+
+.vaccination-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #6982B5;
+    margin: 0;
+}
+
+.vaccination-title i {
+    font-size: 1.15rem;
+}
+
+.vaccination-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.vaccine-count {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.35rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.vaccine-count-current {
+    background: #E8F5E9;
+    color: #2E7D32;
+}
+
+.vaccine-count-expired {
+    background: #FFF8E1;
+    color: #F57F17;
+}
+
+.vaccine-count-missing {
+    background: #FFEBEE;
+    color: #D32F2F;
+}
+
+.vaccination-table-wrap {
+    margin-bottom: 1rem;
+}
+
+.vaccination-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.vaccination-table thead th {
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 0.05em;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #EEEEEE;
+    background: #FAFAFA;
+}
+
+.vaccination-table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid #F0F0F0;
+    font-size: 0.875rem;
+    color: #444;
+    vertical-align: middle;
+}
+
+.vaccination-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.vaccination-dates {
+    color: #555;
+    line-height: 1.45;
+}
+
+.vaccination-empty {
+    color: #999;
+    font-style: italic;
+}
+
+.status-vaccine {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-vaccine-current {
+    background: #E8F5E9;
+    color: #2E7D32;
+}
+
+.status-vaccine-expired {
+    background: #FFF8E1;
+    color: #F57F17;
+}
+
+.status-vaccine-missing {
+    background: #FFEBEE;
+    color: #D32F2F;
+}
+
+.vaccination-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-top: 0.5rem;
+}
+
+.vaccination-card-full {
+    padding: 1.75rem 2rem;
+}
+
+.vaccination-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+}
+
+.vaccination-card-header .pet-form-chip {
+    margin-bottom: 0;
 }
